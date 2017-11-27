@@ -26,3 +26,26 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+#recipesTitle{
+  font-size: 50px;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+}
+
+#recipeList {
+  display: inline-block;
+  width: min-content;
+  margin: 0px; 
+}
+
+.recipes {
+  margin: 20px;
+}
+
+.recipes > button {
+  font-size: 30px;
+  width: 100%;
+  padding: 10px;
+}
