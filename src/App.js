@@ -50,14 +50,14 @@ function inputData(data){
   recipes = rows.map(row => row.value);
   var testrec = recipes;
 
-  apiData = recipes.map(rec => rec.toString());
+  apiData = recipes.map(rec => recipeToString(rec));
 }
 
-function toString() {
+function recipeToString(recipe) {
   var result = "";
-  result += this.name + "</br>";
-  for (var comp in this.components) {
-    result += comp.component;
-  }
+  result += recipe.name + "</br>";
+  result += recipe.components.map(comp => comp.component);
   result += "</br></br>";
+
+  return result;
 }
