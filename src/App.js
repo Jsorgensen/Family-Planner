@@ -17,6 +17,7 @@ class App extends Component {
 
   }
   render() {
+    const recipes = this.createRecipeItems(this.state.recipes);
     return (
       <div className="App">
         <header className="App-header">
@@ -27,18 +28,16 @@ class App extends Component {
         <div id='recipeBlock'>
           <h3 id='recipesTitle'>Recipes</h3>
           <ul id='recipeList'>
-            {this.state.recipeItems}
+            {recipes}
           </ul>
-          {this.state.recipeItem}
         </div>
+        {this.state.recipeItem}
       </div>
     );
   }
   componentDidMount() {
-
     var url = "http://127.0.0.1:5984/dinner_meals/_design/view/_view/Recipes?limit=20&reduce=false";
-    /* "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22nome%2C%20ak%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"; */
-
+    
     fetch(url)
       .then(resp => resp.json())
       .then(json => {
@@ -53,9 +52,7 @@ class App extends Component {
     this.createRecipeItems(this.state.recipes);
   }
   createRecipeItems(recipes) {
-    var recipeItems = recipes.map(recipe => <li className='recipes' key={recipe}><button onClick={(e) => this.onClick(e)}>{recipe}</button></li>);
-    /* ReactDOM.render (recipeItems, document.getElementById('recipeList')); */
-    this.setState({ recipeItems: recipeItems });
+    return recipes.map(recipe => <li className='recipes'><button onClick={(e) => this.onRequestRecipeClick(e)}>{recipe}</button></li>);
   }
   recipeTitles(data) {
     var recipes = data.rows.map(row => row.value);
@@ -63,7 +60,7 @@ class App extends Component {
 
     return recipes;
   }
-  onClick(event) {
+  onRequestRecipeClick(event) {
     var text = event.target.innerHTML;
     this.setState({ display: text });
 
@@ -71,31 +68,43 @@ class App extends Component {
     fetch(recipeUrl)
       .then(resp => resp.json())
       .then(json => {
-        console.log(json);
-        this.setState({ recipe: json })
-        this.createRecipeItem(this.state.recipe);
+        console.log(json.rows[0].value);
+        this.setState({ recipe: json.rows[0].value })
+        this.createRecipeItem(json.rows[0].value);
       })
       .catch(error => {
         this.setState({display: "Crap.... something exploded.  Request recipe didn't work...  " + error});
       });
   }
   createRecipeItem(recipe){
-    var componentItems = this.state.recipe.components.map(comp => {
-      var ingrediantItems = comp.ingredients.map(ingrediant => <li className='ingrediantItems'>{ingrediant.title}{ingrediant.quantity}</li>);
+    var componentItems = recipe.components.map(comp => {
+      var ingrediantItems = comp.ingrediants.map(ingrediant => <li className='ingrediantItems'>{ingrediant.ingrediant + ': ' + ingrediant.quantity + ' ' + ingrediant.unit}</li>);
       var directionItems = comp.directions.map(direction => <li className='directionItems'>{direction}</li>)
-      return 
-        <li className='componentItems'>
-          <h4 className='componentTitle'>{comp.title}</h4>
-          <ul className='ingrediantList'>{ingrediantItems}</ul>
-          <ul className='directionsList'>{directionItems}</ul>
+      return (
+        <li className='blueGroup'>
+          <h4 className='componentTitle'>{comp.component}</h4>
+          <div>
+            <ol className='blueSub ingrediants'><h4>Ingrediants</h4>{ingrediantItems}</ol>
+            <ol className='blueSub directions'><h4>Directions</h4>{directionItems}</ol>
+          </div>
         </li>
+      )
     })
+    var directions = recipe.directions.map(dir => <li>{dir}</li>)
+    var imageProps = [];
+    for(var p in recipe.image)
+      imageProps.push(p);
+    var imageSRC = 'http://127.0.0.1:5984/dinner_meals/'+recipe.id+'/'+imageProps[0];
     this.setState({
       recipeItem: 
         <div className='recipeItemBase'>
           <div className='recipeItem'>
-            <div><img></img></div>
-            <ul className='components'>{componentItems}</ul>
+            <h1>{recipe.key}</h1>
+            <div><img src={imageSRC} alt='Image Not Found' className='recipeImage'></img></div>
+            <ol className='components'>{componentItems}</ol>
+            <div className='blueGroup'>
+              <ol className='blueSub'><h4>Directions</h4>{directions}</ol>
+            </div>
           </div>
         </div>
     })
