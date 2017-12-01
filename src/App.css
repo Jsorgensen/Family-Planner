@@ -35,7 +35,7 @@
   border-color: rgba(124, 51, 33, 0.945);
   background-color: rgb(208, 233, 255);
   border-radius: 45px;
-  margin-bottom: 10vh;
+  margin: 10vh;
 }
 
 #recipesTitle{
@@ -47,19 +47,19 @@
 
 #recipeList {
   display: inline-block;
-  margin: 0px; 
+  margin: 0px;
 }
 
 .recipes {
   margin: 20px;
+  list-style: none;
 }
 
 .recipes > button {
   font-size: 30px;
   width: 100%;
   padding: 10px;
-}
-
-.test {
-  font-size: 50px;
+  border-radius: 25px;
+  background-color: #ffedb0;
+  box-shadow: 5px 5px 2px #7e7673;
 }
