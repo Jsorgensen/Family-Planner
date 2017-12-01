@@ -63,3 +63,42 @@
   background-color: #ffedb0;
   box-shadow: 5px 5px 2px #7e7673;
 }
+
+.recipeItemBase{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
+.recipeItem{
+  display: inline-block;
+  padding: 20px;
+
+}
+
+.recipeImage{
+  width: 300px;
+  height: 300px;
+}
+
+.components{
+  padding: 20px;
+  border-radius: 45px;
+}
+
+.componentItems{
+
+}
+
+.componentTitle{
+
+}
+
+.ingrediantList{
+
+}
+
+.ingrediantItems{
+  
+}

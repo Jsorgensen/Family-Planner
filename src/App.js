@@ -11,7 +11,8 @@ class App extends Component {
       display: '',
       recipes: ['Wendy\'s', 'Fazoli\'s', 'Costa Vida', 'Little Ceasar\'s'],
       recipe: '',
-      recipeItems: []
+      recipeItems: [],
+      recipeItem: <div></div>
     })
 
   }
@@ -28,6 +29,7 @@ class App extends Component {
           <ul id='recipeList'>
             {this.state.recipeItems}
           </ul>
+          {this.state.recipeItem}
         </div>
       </div>
     );
@@ -42,16 +44,16 @@ class App extends Component {
       .then(json => {
         console.log(json);
         this.recipeTitles(json);
-        this.createRecipeItems();
+        this.createRecipeItems(this.state.recipes);
       })
       .catch(error => {
         this.setState({display: 'Failed to receive recipes. ' + error});
       });
 
-    this.createRecipeItems();
+    this.createRecipeItems(this.state.recipes);
   }
-  createRecipeItems() {
-    var recipeItems = this.state.recipes.map(recipe => <li className='recipes' key={recipe}><button onClick={(e) => this.onClick(e)}>{recipe}</button></li>);
+  createRecipeItems(recipes) {
+    var recipeItems = recipes.map(recipe => <li className='recipes' key={recipe}><button onClick={(e) => this.onClick(e)}>{recipe}</button></li>);
     /* ReactDOM.render (recipeItems, document.getElementById('recipeList')); */
     this.setState({ recipeItems: recipeItems });
   }
@@ -71,11 +73,32 @@ class App extends Component {
       .then(json => {
         console.log(json);
         this.setState({ recipe: json })
-        /* recipe = json; */
+        this.createRecipeItem(this.state.recipe);
       })
       .catch(error => {
         this.setState({display: "Crap.... something exploded.  Request recipe didn't work...  " + error});
       });
+  }
+  createRecipeItem(recipe){
+    var componentItems = this.state.recipe.components.map(comp => {
+      var ingrediantItems = comp.ingredients.map(ingrediant => <li className='ingrediantItems'>{ingrediant.title}{ingrediant.quantity}</li>);
+      var directionItems = comp.directions.map(direction => <li className='directionItems'>{direction}</li>)
+      return 
+        <li className='componentItems'>
+          <h4 className='componentTitle'>{comp.title}</h4>
+          <ul className='ingrediantList'>{ingrediantItems}</ul>
+          <ul className='directionsList'>{directionItems}</ul>
+        </li>
+    })
+    this.setState({
+      recipeItem: 
+        <div className='recipeItemBase'>
+          <div className='recipeItem'>
+            <div><img></img></div>
+            <ul className='components'>{componentItems}</ul>
+          </div>
+        </div>
+    })
   }
 }
 
