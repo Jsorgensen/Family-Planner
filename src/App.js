@@ -100,7 +100,7 @@ class App extends Component {
         <div className='recipeItemBase'>
           <div className='recipeItem'>
             <h1>{recipe.key}</h1>
-            <div><img src={imageSRC} alt='Image Not Found' className='recipeImage'></img></div>
+            <div className='imageSub'><img src={imageSRC} alt='Image Not Found' className='recipeImage'></img></div>
             <ol className='components'>{componentItems}</ol>
             <div className='blueGroup'>
               <ol className='blueSub'><h4>Directions</h4>{directions}</ol>
