@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 var fetchError;
@@ -20,10 +19,6 @@ class App extends Component {
     const recipes = this.createRecipeItems(this.state.recipes);
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
         <p id='dataDisplay'>{this.state.display}</p>
         <div id='recipeBlock'>
           <h3 id='recipesTitle'>Recipes</h3>
@@ -112,3 +107,5 @@ class App extends Component {
 }
 
 export default App;
+
+//superAgent
